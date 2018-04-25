@@ -107,7 +107,13 @@
             var listeners = {
                 onMouseDownEventListener: function (e) {
                     var eventTarget = e.target.correspondingUseElement || e.target;
-                    currentTarget = angular.element(eventTarget);
+					currentTarget = angular.element(eventTarget);
+					var regex  = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+					var isIE10orLower = regex.exec(navigator.userAgent) !== null
+					var isIE11 = !!navigator.userAgent.match(/Trident\/7\./);
+					if (isIE10orLower || isIE11 || navigator.userAgent.indexOf("Edge") > -1) {
+						currentTarget = angular.element(eventTarget).children("sw-icon");
+					}
                     handle = currentTarget.closest('.' + uiGridDraggableRowsConstants.ROW_HANDLE_CLASS, $element)[0];
                 },
 
